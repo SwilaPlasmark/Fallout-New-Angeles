@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package falloutgame;
 import java.awt.*;
 
@@ -50,8 +46,18 @@ public static void Draw(Graphics2D g) {
             g.drawLine(Window.getX(zi*xdelta),Window.getY(0),
                     Window.getX(zi*xdelta),Window.getY(Window.getHeight2()));
         }
+//Draw the Path
+        for (int i = 2;i<20;i++) {
+        Player_Token.draw(g, 2, i, xdelta, ydelta);    
+        }
+        for (int i = 3;i<19;i++) {
+        Player_Token.draw(g, i, 19, xdelta, ydelta);    
+        }
+        for (int i = 18;i>3;i--) {
+        Player_Token.draw(g, 18, i, xdelta, ydelta);    
+        }        
         
-        Player_Token.draw(g, 6, 2, xdelta, ydelta);
+//        Player_Token.draw(g, 6, 2, xdelta, ydelta);
         
         return;
         
