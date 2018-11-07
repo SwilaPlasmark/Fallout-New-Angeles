@@ -51,7 +51,7 @@ public static void Draw(Graphics2D g) {
                     Window.getX(zi*xdelta),Window.getY(Window.getHeight2()));
         }
         
-        Player_Token.draw(g, 3, 10, xdelta, ydelta);
+        Player_Token.draw(g, 6, 2, xdelta, ydelta);
         
         return;
         
