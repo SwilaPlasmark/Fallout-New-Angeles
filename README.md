@@ -1,2 +1,0 @@
-# Fallout-New-Angeles 
-DO NOT USE THIS REPOSITORY IT IS ERRONIUS 
