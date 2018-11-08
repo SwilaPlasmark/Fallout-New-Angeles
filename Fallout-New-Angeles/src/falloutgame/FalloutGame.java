@@ -19,15 +19,15 @@ public class FalloutGame extends JFrame implements Runnable {
     boolean gameOver;
     int timeCount;
     double frameRate = 25;
-    Image FalloutMenu;
-    boolean start;
+    
+   
 
     Image Fallout2map;
  
     static FalloutGame frame;
     public static void main(String[] args) {
         frame = new FalloutGame();
-        frame.setSize(Menu.WINDOW_WIDTH, Menu.WINDOW_HEIGHT);
+        frame.setSize(Window.WINDOW_WIDTH, Window.WINDOW_HEIGHT);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
     }
@@ -41,11 +41,7 @@ public class FalloutGame extends JFrame implements Runnable {
 // location of the cursor.
                     int xpos = e.getX();
                     int ypos = e.getY();
-                    
-                 if(Board.StartPressed(e.getX()-Window.getX(0),e.getY()-Window.getY(0))) {
-                      start=true;
-                  }
-                    
+
                 }
                 if (e.BUTTON3 == e.getButton()) {
                     //right button
@@ -134,25 +130,14 @@ public class FalloutGame extends JFrame implements Runnable {
             return;
         }
         
-        
-          ///display Main Menu when start is fasle    
-      if(start!=true) { 
-        g.drawImage(FalloutMenu,Window.getX(0),Window.getY(0),
-                Window.getWidth2(),Window.getHeight2(),this);
-        g.setColor(Color.white);
-        g.fillRoundRect(Window.getX(Window.getWidth2()/2-50), Window.getY(Window.getHeight2()/2), 100, 50, 40, 40);
-        g.setColor(Color.red);
-        g.setFont(new Font("Arial",Font.PLAIN,20));
-        g.drawString("Start", Window.getX(Window.getWidth2()/2-25), Window.getY(Window.getHeight2()/2+30));
-      }
-      if(start){
        g.drawImage(Fallout2map,Window.getX(0),Window.getY(0),
                 Window.getWidth2(),Window.getHeight2(),this);
+        
         Board.Draw(g);
         
         g.setColor(Color.black);
         g.drawPolyline(x, y, 5);        
-      }
+         
         if (gameOver)
         {
             g.setColor(Color.white);
@@ -183,7 +168,7 @@ public class FalloutGame extends JFrame implements Runnable {
         Player.Reset();
         timeCount = 0;
         gameOver = false;
-        start =false;
+       
 
     }
 /////////////////////////////////////////////////////////////////////////
@@ -196,7 +181,6 @@ public class FalloutGame extends JFrame implements Runnable {
             }
         
             Fallout2map = Toolkit.getDefaultToolkit().getImage("./F02.png");
-            FalloutMenu = Toolkit.getDefaultToolkit().getImage("./Menu1.png");
 //            rocketImage = Toolkit.getDefaultToolkit().getImage("./animRocket.GIF");
             reset();    
             //bgSound = new sound("starwars.wav");
@@ -205,12 +189,7 @@ public class FalloutGame extends JFrame implements Runnable {
 //        if (gameOver)
 //            return;
         
-        if(start){
-            frame.setSize(Window.WINDOW_WIDTH, Window.WINDOW_HEIGHT);
-        }
-        else{
-            frame.setSize(Menu.WINDOW_WIDTH, Menu.WINDOW_HEIGHT);
-        }
+        
 
         //if (bgSound.donePlaying)       
             //bgSound = new sound("starwars.wav");
