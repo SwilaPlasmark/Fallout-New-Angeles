@@ -1,9 +1,0 @@
-How to push a file.
-
-git add -A
-git commit -m "some new comment"
-git push origin master
-
-How to pull origin master.
-
-git pull origin master

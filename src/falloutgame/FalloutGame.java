@@ -20,6 +20,8 @@ public class FalloutGame extends JFrame implements Runnable {
     int timeCount;
     double frameRate = 25;
     
+    sound MainTheme = null;
+    sound Travel = null;
    
 
     Image Fallout2map;
@@ -183,7 +185,7 @@ public class FalloutGame extends JFrame implements Runnable {
             Fallout2map = Toolkit.getDefaultToolkit().getImage("./F02.png");
 //            rocketImage = Toolkit.getDefaultToolkit().getImage("./animRocket.GIF");
             reset();    
-            //bgSound = new sound("starwars.wav");
+            MainTheme = new sound("Main Title - Fallout New Vegas .wav");
             
         }
 //        if (gameOver)
