@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package falloutgame;
 import java.awt.*;
 
@@ -27,10 +23,13 @@ public class Board {
             }
         }
     }
-public static void PlayerMove() {
-    board[1][1] = new Player_Token();
-    
-}
+    public static void PlayerMove() {
+        board[3][2] = new Player_Token(Color.yellow);
+    }
+    public static void PlayerMove2() {
+        board[3][10] = board[3][2];
+        board[3][2] = null;
+    }
     
 public static void Draw(Graphics2D g) {
 //Calculate the width and height of each board square.
@@ -50,11 +49,67 @@ public static void Draw(Graphics2D g) {
             g.drawLine(Window.getX(zi*xdelta),Window.getY(0),
                     Window.getX(zi*xdelta),Window.getY(Window.getHeight2()));
         }
+//Draw the Path
+        for (int i = 1;i<19;i++) {
+        g.setColor(Color.GREEN);            
+        g.fillRect(Window.getX(i*xdelta),Window.getY(2*ydelta),xdelta,ydelta);
+        g.setColor(Color.black);
+        g.drawRect(Window.getX(i*xdelta),Window.getY(2*ydelta),xdelta,ydelta);   
+        }
+        for (int i = 3;i<18;i++) {
+        g.setColor(Color.GREEN);    
+        g.fillRect(Window.getX(18*xdelta),Window.getY(i*ydelta),xdelta,ydelta);
+        g.setColor(Color.black);
+        g.drawRect(Window.getX(18*xdelta),Window.getY(i*ydelta),xdelta,ydelta);
+        }
+        for (int i = 18;i>1;i--) {
+        g.setColor(Color.GREEN);    
+        g.fillRect(Window.getX(i*xdelta),Window.getY(18*ydelta),xdelta,ydelta);
+        g.setColor(Color.black);
+        g.drawRect(Window.getX(i*xdelta),Window.getY(18*ydelta),xdelta,ydelta);
+        }        
+        for (int i = 17;i>3;i--) {
+        g.setColor(Color.GREEN);    
+        g.fillRect(Window.getX(2*xdelta),Window.getY(i*ydelta),xdelta,ydelta);
+        g.setColor(Color.black);
+        g.drawRect(Window.getX(2*xdelta),Window.getY(i*ydelta),xdelta,ydelta);
+        }
+        for (int i = 3;i<9;i++) {
+        g.setColor(Color.GREEN);    
+        g.fillRect(Window.getX(i*xdelta),Window.getY(4*ydelta),xdelta,ydelta);
+        g.setColor(Color.black);
+        g.drawRect(Window.getX(i*xdelta),Window.getY(4*ydelta),xdelta,ydelta);
+        }
+        for (int i = 4;i<9;i++) {
+        g.setColor(Color.GREEN);    
+        g.fillRect(Window.getX(9*xdelta),Window.getY(i*ydelta),xdelta,ydelta);
+        g.setColor(Color.black);
+        g.drawRect(Window.getX(9*xdelta),Window.getY(i*ydelta),xdelta,ydelta);
+        }
+        for (int i = 4;i<9;i++) {
+        g.setColor(Color.GREEN);    
+        g.fillRect(Window.getX(9*xdelta),Window.getY(i*ydelta),xdelta,ydelta);
+        g.setColor(Color.black);
+        g.drawRect(Window.getX(9*xdelta),Window.getY(i*ydelta),xdelta,ydelta);
+        }       
         
-        Player_Token.draw(g, 6, 2, xdelta, ydelta);
-        
+//End Space
+        g.setColor(Color.GREEN);
+        g.fillRect(Window.getX(8*xdelta),Window.getY(8*ydelta),xdelta,ydelta);
+        g.setColor(Color.black);
+        g.drawRect(Window.getX(8*xdelta),Window.getY(8*ydelta),xdelta,ydelta);
+//Draw player
+        for (int zi = 0;zi<NUM_ROWS;zi++)
+        {
+            for (int zx = 0;zx<NUM_COLUMNS;zx++)
+            {
+                if (board[zi][zx] != null)
+                {
+                    board[zi][zx].draw(g, zi, zx, xdelta, ydelta);
+                }
+            }
+        } 
         return;
-        
     }    
 }
 //Draw the tokens.        

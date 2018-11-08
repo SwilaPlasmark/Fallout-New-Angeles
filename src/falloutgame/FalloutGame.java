@@ -37,7 +37,7 @@ public class FalloutGame extends JFrame implements Runnable {
             public void mousePressed(MouseEvent e) {
                 if (e.BUTTON1 == e.getButton()) {
                     //left button
-
+                    Board.PlayerMove();
 // location of the cursor.
                     int xpos = e.getX();
                     int ypos = e.getY();
@@ -80,7 +80,7 @@ public class FalloutGame extends JFrame implements Runnable {
                 } else if (e.VK_RIGHT == e.getKeyCode()) {
                     
                 } else if (e.VK_SPACE == e.getKeyCode()) {
-                   
+                   Board.PlayerMove2();
                     
                 }
 
@@ -113,7 +113,7 @@ public class FalloutGame extends JFrame implements Runnable {
                     RenderingHints.VALUE_ANTIALIAS_ON);
         }
 //fill background
-        g.setColor(Color.cyan);
+        g.setColor(Color.black);
         g.fillRect(0, 0, Window.xsize, Window.ysize);
 
         int x[] = {Window.getX(0), Window.getX(Window.getWidth2()), Window.getX(Window.getWidth2()), Window.getX(0), Window.getX(0)};
@@ -122,8 +122,8 @@ public class FalloutGame extends JFrame implements Runnable {
         g.setColor(Color.black);
         g.fillPolygon(x, y, 4);
 // draw border
-        g.setColor(Color.red);
-        g.drawPolyline(x, y, 5);
+//        g.setColor(Color.black);
+//        g.drawPolyline(x, y, 5);
 
         if (animateFirstTime) {
             gOld.drawImage(image, 0, 0, null);
@@ -135,8 +135,9 @@ public class FalloutGame extends JFrame implements Runnable {
         
         Board.Draw(g);
         
-        
-        
+        g.setColor(Color.black);
+        g.drawPolyline(x, y, 5);        
+         
         if (gameOver)
         {
             g.setColor(Color.white);
@@ -164,6 +165,7 @@ public class FalloutGame extends JFrame implements Runnable {
 /////////////////////////////////////////////////////////////////////////
     public void reset() {
         Board.Reset();
+        Player.Reset();
         timeCount = 0;
         gameOver = false;
        
