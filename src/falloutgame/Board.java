@@ -110,7 +110,17 @@ public static void Draw(Graphics2D g) {
             }
         } 
         return;
-    }    
+    }
+//check is you click within the boudaries
+    public static boolean StartPressed(int xpixel, int ypixel){
+        if(Window.getX(Window.getWidth2()/2)-78<xpixel&&
+           Window.getX(Window.getWidth2()/2)+22>xpixel&&
+           Window.getY(Window.getHeight2()/2)-70<ypixel&&
+           Window.getY(Window.getHeight2()/2)-18>ypixel){
+            return(true);
+        }
+        return false;
+    }
 }
 //Draw the tokens.        
 //        for (int zi = 0;zi<NUM_ROWS;zi++)
