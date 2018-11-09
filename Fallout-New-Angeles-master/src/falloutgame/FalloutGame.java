@@ -23,7 +23,10 @@ public class FalloutGame extends JFrame implements Runnable {
     public static boolean start;
     
     Image Fallout2map;
-    sound menuSound=null;
+    sound menuSound = null;
+    sound travelMusic = null;
+    sound battleMusic = null;
+       
     static FalloutGame frame;
     public static void main(String[] args) {
         frame = new FalloutGame();
@@ -185,7 +188,10 @@ public class FalloutGame extends JFrame implements Runnable {
         gameOver = false;
         start =false;
   
-        menuSound = new sound("Main Title - Fallout New Vegas .wav");
+        menuSound = new sound("Main Title - Fallout New Vegas .wav", 0);
+
+        travelMusic = new sound("Traveling1.wav",1); 
+        
     }
 /////////////////////////////////////////////////////////////////////////
     public void animate() {

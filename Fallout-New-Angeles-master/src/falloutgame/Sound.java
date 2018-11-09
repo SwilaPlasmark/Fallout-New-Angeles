@@ -13,11 +13,13 @@ class sound implements Runnable {
     Thread myThread;
     File soundFile;
     public boolean donePlaying = false;
-    sound(String _name)
+    int type;
+    sound(String _name, int _type)
     {
         soundFile = new File(_name);
         myThread = new Thread(this);
         myThread.start();
+        type = _type;
     }
     public void run()
     {
@@ -34,7 +36,10 @@ class sound implements Runnable {
             byte[] audioData = new byte[16384];
             while (read > -1){
                 read = ais.read(audioData,0,audioData.length);
-                if (read >= 0&&!FalloutGame.start) {
+                if (read >= 0 && !FalloutGame.start && type ==0) {
+                    source.write(audioData,0,read);
+                }
+                else if(read >= 0 && FalloutGame.start && type ==1){
                     source.write(audioData,0,read);
                 }
             }
