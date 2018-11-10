@@ -1,5 +1,13 @@
+<<<<<<< HEAD
 This is a test A.
 This is a test B.
 This is a test C.
 
 
+=======
+This is a test A.
+This is a test B.
+This is a test C.
+
+
+>>>>>>> 3bf33a8b940bf9f95f72995ddb8a1334f5a4a262
