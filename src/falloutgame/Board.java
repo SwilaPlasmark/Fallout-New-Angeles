@@ -27,10 +27,10 @@ public class Board {
         board[3][2] = new Player_Token(Color.yellow);
     }
     public static void PlayerMove2() {
-        board[3][10] = board[3][2];
+        board[10][13] = board[3][2];
         board[3][2] = null;
     }
-    
+
 public static void Draw(Graphics2D g) {
 //Calculate the width and height of each board square.
         int ydelta = Window.getHeight2()/NUM_ROWS;
@@ -49,6 +49,7 @@ public static void Draw(Graphics2D g) {
             g.drawLine(Window.getX(zi*xdelta),Window.getY(0),
                     Window.getX(zi*xdelta),Window.getY(Window.getHeight2()));
         }
+        
 //Draw the Path
         for (int i = 1;i<19;i++) {
         g.setColor(Color.GREEN);            
@@ -86,18 +87,37 @@ public static void Draw(Graphics2D g) {
         g.setColor(Color.black);
         g.drawRect(Window.getX(9*xdelta),Window.getY(i*ydelta),xdelta,ydelta);
         }
-        for (int i = 4;i<9;i++) {
+        for (int i = 17;i>8;i--) {
+        g.setColor(Color.GREEN);    
+        g.fillRect(Window.getX(i*xdelta),Window.getY(14*ydelta),xdelta,ydelta);
+        g.setColor(Color.black);
+        g.drawRect(Window.getX(i*xdelta),Window.getY(14*ydelta),xdelta,ydelta);
+        }
+        for (int i = 15;i<18;i++) {
         g.setColor(Color.GREEN);    
         g.fillRect(Window.getX(9*xdelta),Window.getY(i*ydelta),xdelta,ydelta);
         g.setColor(Color.black);
         g.drawRect(Window.getX(9*xdelta),Window.getY(i*ydelta),xdelta,ydelta);
-        }       
+        }
+        for (int i = 3;i<14;i++) {
+        g.setColor(Color.yellow);    
+        g.fillRect(Window.getX(12*xdelta),Window.getY(i*ydelta),xdelta,ydelta);
+        g.setColor(Color.black);
+        g.drawRect(Window.getX(12*xdelta),Window.getY(i*ydelta),xdelta,ydelta);
+        }
         
+//Cities
+        g.setColor(Color.white);
+        City.draw(g, Window.getX(12*xdelta), Window.getY(9*ydelta), xdelta, ydelta);
+        City.draw(g, Window.getX(18*xdelta), Window.getY(5*ydelta), xdelta, ydelta);
+//EnemyBases
+        EnemyBase.draw(g, Window.getX(18*xdelta), Window.getY(5*ydelta), xdelta, ydelta);
 //End Space
         g.setColor(Color.GREEN);
         g.fillRect(Window.getX(8*xdelta),Window.getY(8*ydelta),xdelta,ydelta);
         g.setColor(Color.black);
         g.drawRect(Window.getX(8*xdelta),Window.getY(8*ydelta),xdelta,ydelta);
+        
 //Draw player
         for (int zi = 0;zi<NUM_ROWS;zi++)
         {
@@ -110,18 +130,9 @@ public static void Draw(Graphics2D g) {
             }
         } 
         return;
-    }
-//check is you click within the boudaries
-    public static boolean StartPressed(int xpixel, int ypixel){
-        if(Window.getX(Window.getWidth2()/2)-78<xpixel&&
-           Window.getX(Window.getWidth2()/2)+22>xpixel&&
-           Window.getY(Window.getHeight2()/2)-70<ypixel&&
-           Window.getY(Window.getHeight2()/2)-18>ypixel){
-            return(true);
-        }
-        return false;
-    }
+    }    
 }
+
 //Draw the tokens.        
 //        for (int zi = 0;zi<NUM_ROWS;zi++)
 //        {
