@@ -19,12 +19,16 @@ public class FalloutGame extends JFrame implements Runnable {
     boolean gameOver;
     int timeCount;
     double frameRate = 25;
+    Image FalloutMenu;
+    public static boolean start;
     
-   
-
     Image Fallout2map;
- 
+    sound menuSound = null;
+    sound travelMusic = null;
+    
+    sound battleMusic = null;
     static FalloutGame frame;
+    
     public static void main(String[] args) {
         frame = new FalloutGame();
         frame.setSize(Window.WINDOW_WIDTH, Window.WINDOW_HEIGHT);
@@ -37,15 +41,21 @@ public class FalloutGame extends JFrame implements Runnable {
             public void mousePressed(MouseEvent e) {
                 if (e.BUTTON1 == e.getButton()) {
                     //left button
-
+                    Board.PlayerMove();
 // location of the cursor.
                     int xpos = e.getX();
                     int ypos = e.getY();
-
+                    
+                    if(Board.StartPressed(e.getX()-Window.getX(0),e.getY()-Window.getY(0))) {
+                      start=true;
+                    int randtype=(int)(Math.random()*2);
+                    
+                    SetAudio(randtype);
+                  }
                 }
                 if (e.BUTTON3 == e.getButton()) {
                     //right button
-                    reset();
+                    //reset();
                 }
                 repaint();
             }
@@ -80,7 +90,7 @@ public class FalloutGame extends JFrame implements Runnable {
                 } else if (e.VK_RIGHT == e.getKeyCode()) {
                     
                 } else if (e.VK_SPACE == e.getKeyCode()) {
-                   
+                   Board.PlayerMove2();
                     
                 }
 
@@ -99,7 +109,17 @@ public class FalloutGame extends JFrame implements Runnable {
     public void destroy() {
     }
 
-
+    public void SetAudio(int _type){
+        int type=_type;
+        System.out.println(type);
+        if(type==0)    
+        travelMusic = new sound("Traveling1.wav",1);   
+        
+        if(type==1)    
+        travelMusic = new sound("Traveling2.wav",1);
+    
+    
+    }
 
 ////////////////////////////////////////////////////////////////////////////
     public void paint(Graphics gOld) {
@@ -113,7 +133,7 @@ public class FalloutGame extends JFrame implements Runnable {
                     RenderingHints.VALUE_ANTIALIAS_ON);
         }
 //fill background
-        g.setColor(Color.cyan);
+        g.setColor(Color.black);
         g.fillRect(0, 0, Window.xsize, Window.ysize);
 
         int x[] = {Window.getX(0), Window.getX(Window.getWidth2()), Window.getX(Window.getWidth2()), Window.getX(0), Window.getX(0)};
@@ -122,27 +142,38 @@ public class FalloutGame extends JFrame implements Runnable {
         g.setColor(Color.black);
         g.fillPolygon(x, y, 4);
 // draw border
-        g.setColor(Color.red);
-        g.drawPolyline(x, y, 5);
+//        g.setColor(Color.black);
+//        g.drawPolyline(x, y, 5);
 
         if (animateFirstTime) {
             gOld.drawImage(image, 0, 0, null);
             return;
         }
-        
+        if(start!=true) { 
+            g.drawImage(FalloutMenu,Window.getX(0),Window.getY(0),
+                    Window.getWidth2(),Window.getHeight2(),this);
+            g.setColor(Color.white);
+            g.fillRoundRect(Window.getX(Window.getWidth2()/2-50), Window.getY(Window.getHeight2()/2), 100, 50, 40, 40);
+            g.setColor(Color.red);
+            g.setFont(new Font("Arial",Font.PLAIN,20));
+            g.drawString("Start", Window.getX(Window.getWidth2()/2-25), Window.getY(Window.getHeight2()/2+30));
+        }
+        if(start) 
+       if(start){
        g.drawImage(Fallout2map,Window.getX(0),Window.getY(0),
                 Window.getWidth2(),Window.getHeight2(),this);
-        
         Board.Draw(g);
         
-        
-        
+        g.setColor(Color.black);
+        g.drawPolyline(x, y, 5);        
+      }
         if (gameOver)
         {
             g.setColor(Color.white);
             g.setFont(new Font("Arial",Font.PLAIN,50));
             g.drawString("Game Over", 60, 360);        
         }            
+        
         gOld.drawImage(image, 0, 0, null);
     }
 
@@ -164,10 +195,20 @@ public class FalloutGame extends JFrame implements Runnable {
 /////////////////////////////////////////////////////////////////////////
     public void reset() {
         Board.Reset();
+        Player.Reset();
         timeCount = 0;
         gameOver = false;
        
-
+        start =false;
+  
+      
+        
+        menuSound = new sound("Main Title - Fallout New Vegas .wav", 0);
+        //travelMusic = new sound("Traveling2.wav",1); 
+        //menuSound = new sound(,0);
+        travelMusic = null; 
+        
+        
     }
 /////////////////////////////////////////////////////////////////////////
     public void animate() {
@@ -179,7 +220,8 @@ public class FalloutGame extends JFrame implements Runnable {
             }
         
             Fallout2map = Toolkit.getDefaultToolkit().getImage("./F02.png");
-//            rocketImage = Toolkit.getDefaultToolkit().getImage("./animRocket.GIF");
+            FalloutMenu = Toolkit.getDefaultToolkit().getImage("./Menu1.png");
+                        //rocketImage = Toolkit.getDefaultToolkit().getImage("./animRocket.GIF");
             reset();    
             //bgSound = new sound("starwars.wav");
             
@@ -187,7 +229,16 @@ public class FalloutGame extends JFrame implements Runnable {
 //        if (gameOver)
 //            return;
         
+        if(start){
+            frame.setSize(Window.WINDOW_WIDTH, Window.WINDOW_HEIGHT);
+            
+        }
         
+
+        else{
+           
+            frame.setSize(Menu.WINDOW_WIDTH, Menu.WINDOW_HEIGHT);
+        }
 
         //if (bgSound.donePlaying)       
             //bgSound = new sound("starwars.wav");
@@ -197,7 +248,6 @@ public class FalloutGame extends JFrame implements Runnable {
         
         timeCount++;
     }
-
 ////////////////////////////////////////////////////////////////////////////
     public void start() {
         if (relaxer == null) {
