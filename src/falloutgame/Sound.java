@@ -37,15 +37,25 @@ class sound implements Runnable {
             while (read > -1){
                 read = ais.read(audioData,0,audioData.length);
                 if (read >= 0 && !FalloutGame.start && type ==0) {
+                    if(FalloutGame.stopsounds)
+                       return;
                     source.write(audioData,0,read);
                 }
 //                if(read >= 0 && FalloutGame.start && type ==1){
 //                    source.write(audioData,0,read);
 //                }
+                
                 if (read >= 0 && type ==1) {
+                    if(FalloutGame.radiostatus||FalloutGame.stopsounds)
+                       return; 
                     source.write(audioData,0,read);
                 }
                 
+                if (read >= 0 && FalloutGame.radiostatus && type ==2) {
+                    if(FalloutGame.stopsounds)
+                        return;
+                    source.write(audioData,0,read);
+                }
             }
         
         donePlaying = true;

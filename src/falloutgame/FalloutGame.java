@@ -20,11 +20,16 @@ public class FalloutGame extends JFrame implements Runnable {
     int timeCount;
     double frameRate = 25;
     Image FalloutMenu;
+    public static boolean stopsounds;
     public static boolean start;
+    
+    public static boolean radiostatus;
+    public static boolean menumusicstatus;
     
     Image Fallout2map;
     sound menuSound = null;
     sound travelMusic = null;
+    sound radioMusic = null;
     
     sound battleMusic = null;
     static FalloutGame frame;
@@ -50,14 +55,20 @@ public class FalloutGame extends JFrame implements Runnable {
                       start=true;
                     int randtype=(int)(Math.random()*2);
                     
-                    SetAudio(randtype);
+                    SetAmbiantAudio(randtype);
                   }
                 }
                 if (e.BUTTON3 == e.getButton()) {
                     //right button
+                    //stopsounds=true;
+                    
                     //reset();
+                    
                 }
+                 
+                
                 repaint();
+                
             }
         });
 
@@ -91,9 +102,54 @@ public class FalloutGame extends JFrame implements Runnable {
                     
                 } else if (e.VK_SPACE == e.getKeyCode()) {
                    Board.PlayerMove2();
+                   
                     
                 }
+                else if(e.VK_M==e.getKeyCode()){
+                    if(!stopsounds)
+                       stopsounds=true;
+                    
+                    
+                    else if(stopsounds){
+                            stopsounds=false;
+                       int randtype=(int)(Math.random()*2);
+               
+                       if(!start){
+                        menumusicstatus=true;
+                        SetMenuAudio();
+                       }
+                       if(start&&radiostatus)
+                       SetRadioAudio(randtype);
 
+                       else if(start&&!radiostatus) 
+                       SetAmbiantAudio(randtype);
+                    
+                       
+                       
+                    }
+                    
+                    
+                }
+                
+                
+                else if(e.VK_R==e.getKeyCode()){
+                   Board.PlayerMove2();
+                   if(!radiostatus){
+                       radiostatus=true;
+                       int randtype=(int)(Math.random()*2);
+                       SetAmbiantAudio(randtype);
+                   }
+                   else if(radiostatus)
+                   radiostatus=false;
+                   
+                   int randtype=(int)(Math.random()*2);
+                   SetRadioAudio(randtype);
+                   
+                }
+                else if(e.VK_E==e.getKeyCode()){
+                   Board.PlayerMove2();
+                     
+                }
                 repaint();
             }
         });
@@ -108,8 +164,33 @@ public class FalloutGame extends JFrame implements Runnable {
 ////////////////////////////////////////////////////////////////////////////
     public void destroy() {
     }
+////////////////////////////////////////////////////////////////////////////
 
-    public void SetAudio(int _type){
+    public void SetMenuAudio(){
+        //int type=_type;
+        //System.out.println();
+        //if(type==0)    
+        menuSound = new sound("Main Title - Fallout New Vegas .wav", 0);
+        
+//        if(type==1)    
+//        radioMusic = new sound("Traveling2.wav",1);
+        
+    }
+////////////////////////////////////////////////////////////////////////////
+        public void SetRadioAudio(int _type){
+        int type=_type;
+        System.out.println(type);
+        
+        if(type==0)    
+        radioMusic = new sound("Radio1.wav",2);   
+        
+        if(type==1)    
+        radioMusic = new sound("Radio2.wav",2);
+        
+    }
+////////////////////////////////////////////////////////////////////////////
+
+    public void SetAmbiantAudio(int _type){
         int type=_type;
         System.out.println(type);
         if(type==0)    
@@ -117,8 +198,8 @@ public class FalloutGame extends JFrame implements Runnable {
         
         if(type==1)    
         travelMusic = new sound("Traveling2.wav",1);
-    
-    
+        
+        
     }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -152,11 +233,12 @@ public class FalloutGame extends JFrame implements Runnable {
         if(start!=true) { 
             g.drawImage(FalloutMenu,Window.getX(0),Window.getY(0),
                     Window.getWidth2(),Window.getHeight2(),this);
-            g.setColor(Color.white);
-            g.fillRoundRect(Window.getX(Window.getWidth2()/2-50), Window.getY(Window.getHeight2()/2), 100, 50, 40, 40);
-            g.setColor(Color.red);
-            g.setFont(new Font("Arial",Font.PLAIN,20));
-            g.drawString("Start", Window.getX(Window.getWidth2()/2-25), Window.getY(Window.getHeight2()/2+30));
+            g.setColor(Color.ORANGE);
+            //g.fillRect(Window.getX(Window.getWidth2()/2-50), Window.getY(Window.getHeight2()/2), 100, 50, 40, 40);
+            g.fillRect(Window.getX(Window.getWidth2()/2-55), Window.getY(Window.getHeight2()-40), 100, 30);
+            g.setColor(Color.BLACK);
+            g.setFont(new Font("Times New Roman",Font.PLAIN,20));
+            g.drawString("Start", Window.getX(Window.getWidth2()/2-25), Window.getY(Window.getHeight2()-20));
         }
         if(start) 
        if(start){
@@ -202,11 +284,12 @@ public class FalloutGame extends JFrame implements Runnable {
         start =false;
   
       
-        
+        //stopsounds=false;
+        menumusicstatus=true;
         menuSound = new sound("Main Title - Fallout New Vegas .wav", 0);
         //travelMusic = new sound("Traveling2.wav",1); 
         //menuSound = new sound(,0);
-        travelMusic = null; 
+        
         
         
     }
@@ -240,8 +323,8 @@ public class FalloutGame extends JFrame implements Runnable {
             frame.setSize(Menu.WINDOW_WIDTH, Menu.WINDOW_HEIGHT);
         }
 
-        //if (bgSound.donePlaying)       
-            //bgSound = new sound("starwars.wav");
+        if (menuSound.donePlaying)       
+            menuSound = new sound("Main Title - Fallout New Vegas .wav", 0);
         
         
         

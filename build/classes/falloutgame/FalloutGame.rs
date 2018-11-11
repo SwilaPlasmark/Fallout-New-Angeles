@@ -1,2 +1,0 @@
-falloutgame.Drawing
-falloutgame.FalloutGame
