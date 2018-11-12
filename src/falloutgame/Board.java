@@ -121,6 +121,10 @@ public static void Draw(Graphics2D g) {
         g.fillRect(Window.getX(8*xdelta),Window.getY(8*ydelta),xdelta,ydelta);
         g.setColor(Color.black);
         g.drawRect(Window.getX(8*xdelta),Window.getY(8*ydelta),xdelta,ydelta);
+//Draw Movement buttons
+        g.setColor(Color.white);
+            g.setFont(new Font("Arial",Font.PLAIN,25));
+            g.drawString("Game Over", 60, 120);      
         
 //Draw player
         for (int zi = 0;zi<NUM_ROWS;zi++)
@@ -150,6 +154,18 @@ public static void Draw(Graphics2D g) {
             return(true);
         }
         return false;
+    }
+    public static boolean checkPress(int xpixel, int ypixel){
+//        if(Window.getX(Window.getWidth2()/2)-78<xpixel&&
+//           Window.getX(Window.getWidth2()/2)+22>xpixel&&
+//           Window.getY(Window.getHeight2()/2)-70<ypixel&&
+//           Window.getY(Window.getHeight2()/2)-18>ypixel){
+//            return(true);
+//        }
+        //if(){
+            return(true);
+        //}
+        //return false;
     }
 }
 

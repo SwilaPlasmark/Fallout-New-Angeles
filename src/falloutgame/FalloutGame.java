@@ -33,13 +33,19 @@ public class FalloutGame extends JFrame implements Runnable {
     
     sound battleMusic = null;
     static FalloutGame frame;
+    static InventoryClient Inventoryframe;
     
     public static void main(String[] args) {
         frame = new FalloutGame();
         frame.setSize(Window.WINDOW_WIDTH, Window.WINDOW_HEIGHT);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
+        
+       
+    
+        
     }
+    
 
     public FalloutGame() {
         addMouseListener(new MouseAdapter() {
@@ -53,6 +59,13 @@ public class FalloutGame extends JFrame implements Runnable {
                     
                     if(Board.StartPressed(e.getX()-Window.getX(0),e.getY()-Window.getY(0))) {
                       start=true;
+                    
+                     Inventoryframe = new InventoryClient();
+                     Inventoryframe.setSize(InventoryWindow.INVWINDOW_WIDTH, InventoryWindow.INVWINDOW_HEIGHT);
+                     //Inventoryframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                     Inventoryframe.setVisible(true); 
+                    
+                      
                     int randtype=(int)(Math.random()*2);
                     
                     SetAmbiantAudio(randtype);
@@ -130,6 +143,12 @@ public class FalloutGame extends JFrame implements Runnable {
                     
                     
                 }
+                else if(e.VK_ENTER==e.getKeyCode()){
+                start=true;  
+                }
+                    
+                    
+                
                 
                 
                 else if(e.VK_R==e.getKeyCode()){
@@ -314,15 +333,22 @@ public class FalloutGame extends JFrame implements Runnable {
         
         if(start){
             frame.setSize(Window.WINDOW_WIDTH, Window.WINDOW_HEIGHT);
-            
+            Inventoryframe.setSize(InventoryWindow.INVWINDOW_WIDTH, InventoryWindow.INVWINDOW_HEIGHT);
+
         }
         
 
         else{
            
             frame.setSize(Menu.WINDOW_WIDTH, Menu.WINDOW_HEIGHT);
+        
         }
 
+      
+
+
+           
+        
         if (menuSound.donePlaying)       
             menuSound = new sound("Main Title - Fallout New Vegas .wav", 0);
         
