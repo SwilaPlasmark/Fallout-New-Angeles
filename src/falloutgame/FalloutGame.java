@@ -19,69 +19,37 @@ public class FalloutGame extends JFrame implements Runnable {
     boolean gameOver;
     int timeCount;
     double frameRate = 25;
-    Image FalloutMenu;
-    public static boolean stopsounds;
-    public static boolean start;
     
-    public static boolean radiostatus;
-    public static boolean menumusicstatus;
-    
+   
+
     Image Fallout2map;
-    sound menuSound = null;
-    sound travelMusic = null;
-    sound radioMusic = null;
-    
-    sound battleMusic = null;
+ 
     static FalloutGame frame;
-    static InventoryClient Inventoryframe;
-    
     public static void main(String[] args) {
         frame = new FalloutGame();
         frame.setSize(Window.WINDOW_WIDTH, Window.WINDOW_HEIGHT);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
-        
-       
-    
-        
     }
-    
 
     public FalloutGame() {
         addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent e) {
                 if (e.BUTTON1 == e.getButton()) {
                     //left button
-                    Board.PlayerMove();
+                    
 // location of the cursor.
                     int xpos = e.getX();
                     int ypos = e.getY();
-                    
-                    if(Board.StartPressed(e.getX()-Window.getX(0),e.getY()-Window.getY(0))) {
-                      start=true;
-                    
-                     Inventoryframe = new InventoryClient();
-                     Inventoryframe.setSize(InventoryWindow.INVWINDOW_WIDTH, InventoryWindow.INVWINDOW_HEIGHT);
-                     //Inventoryframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                     Inventoryframe.setVisible(true); 
-                    
-                      
-                    int randtype=(int)(Math.random()*2);
-                    
-                    SetAmbiantAudio(randtype);
-                  }
+                   
+                    Board.PickMoveOption(e.getX() - Window.getX(0),
+                            e.getY() - Window.getY(0));  
                 }
                 if (e.BUTTON3 == e.getButton()) {
                     //right button
-                    //stopsounds=true;
-                    
-                    //reset();
-                    
+                    reset();
                 }
-                 
-                
                 repaint();
-                
             }
         });
 
@@ -114,61 +82,9 @@ public class FalloutGame extends JFrame implements Runnable {
                 } else if (e.VK_RIGHT == e.getKeyCode()) {
                     
                 } else if (e.VK_SPACE == e.getKeyCode()) {
-                   Board.PlayerMove2();
-                   
-                    
+                    Board.PlayerStart();
                 }
-                else if(e.VK_M==e.getKeyCode()){
-                    if(!stopsounds)
-                       stopsounds=true;
-                    
-                    
-                    else if(stopsounds){
-                            stopsounds=false;
-                       int randtype=(int)(Math.random()*2);
-               
-                       if(!start){
-                        menumusicstatus=true;
-                        SetMenuAudio();
-                       }
-                       if(start&&radiostatus)
-                       SetRadioAudio(randtype);
 
-                       else if(start&&!radiostatus) 
-                       SetAmbiantAudio(randtype);
-                    
-                       
-                       
-                    }
-                    
-                    
-                }
-                else if(e.VK_ENTER==e.getKeyCode()){
-                start=true;  
-                }
-                    
-                    
-                
-                
-                
-                else if(e.VK_R==e.getKeyCode()){
-                   Board.PlayerMove2();
-                   if(!radiostatus){
-                       radiostatus=true;
-                       int randtype=(int)(Math.random()*2);
-                       SetAmbiantAudio(randtype);
-                   }
-                   else if(radiostatus)
-                   radiostatus=false;
-                   
-                   int randtype=(int)(Math.random()*2);
-                   SetRadioAudio(randtype);
-                   
-                }
-                else if(e.VK_E==e.getKeyCode()){
-                   Board.PlayerMove2();
-                     
-                }
                 repaint();
             }
         });
@@ -182,43 +98,6 @@ public class FalloutGame extends JFrame implements Runnable {
     }
 ////////////////////////////////////////////////////////////////////////////
     public void destroy() {
-    }
-////////////////////////////////////////////////////////////////////////////
-
-    public void SetMenuAudio(){
-        //int type=_type;
-        //System.out.println();
-        //if(type==0)    
-        menuSound = new sound("Main Title - Fallout New Vegas .wav", 0);
-        
-//        if(type==1)    
-//        radioMusic = new sound("Traveling2.wav",1);
-        
-    }
-////////////////////////////////////////////////////////////////////////////
-        public void SetRadioAudio(int _type){
-        int type=_type;
-        System.out.println(type);
-        
-        if(type==0)    
-        radioMusic = new sound("Radio1.wav",2);   
-        
-        if(type==1)    
-        radioMusic = new sound("Radio2.wav",2);
-        
-    }
-////////////////////////////////////////////////////////////////////////////
-
-    public void SetAmbiantAudio(int _type){
-        int type=_type;
-        System.out.println(type);
-        if(type==0)    
-        travelMusic = new sound("Traveling1.wav",1);   
-        
-        if(type==1)    
-        travelMusic = new sound("Traveling2.wav",1);
-        
-        
     }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -241,39 +120,27 @@ public class FalloutGame extends JFrame implements Runnable {
 //fill border
         g.setColor(Color.black);
         g.fillPolygon(x, y, 4);
-// draw border
-//        g.setColor(Color.black);
-//        g.drawPolyline(x, y, 5);
-
+ 
         if (animateFirstTime) {
             gOld.drawImage(image, 0, 0, null);
             return;
         }
-        if(start!=true) { 
-            g.drawImage(FalloutMenu,Window.getX(0),Window.getY(0),
-                    Window.getWidth2(),Window.getHeight2(),this);
-            g.setColor(Color.ORANGE);
-            //g.fillRect(Window.getX(Window.getWidth2()/2-50), Window.getY(Window.getHeight2()/2), 100, 50, 40, 40);
-            g.fillRect(Window.getX(Window.getWidth2()/2-55), Window.getY(Window.getHeight2()-40), 100, 30);
-            g.setColor(Color.BLACK);
-            g.setFont(new Font("Times New Roman",Font.PLAIN,20));
-            g.drawString("Start", Window.getX(Window.getWidth2()/2-25), Window.getY(Window.getHeight2()-20));
-        }
-        if(start) 
-       if(start){
-       g.drawImage(Fallout2map,Window.getX(0),Window.getY(0),
-                Window.getWidth2(),Window.getHeight2(),this);
+//Draw Background map image        
+       g.drawImage(Fallout2map,Window.getX(0),Window.getY(0), Window.getWidth2(),Window.getHeight2(),this);
+//Draw actual board        
         Board.Draw(g);
-        
+//Draw move options for player        
+        Board.DrawMoveOptions(g);
+// draw border        
         g.setColor(Color.black);
         g.drawPolyline(x, y, 5);        
-      }
+//Display a gamover
         if (gameOver)
         {
             g.setColor(Color.white);
             g.setFont(new Font("Arial",Font.PLAIN,50));
             g.drawString("Game Over", 60, 360);        
-        }            
+        }
         
         gOld.drawImage(image, 0, 0, null);
     }
@@ -300,17 +167,7 @@ public class FalloutGame extends JFrame implements Runnable {
         timeCount = 0;
         gameOver = false;
        
-        start =false;
-  
-      
-        //stopsounds=false;
-        menumusicstatus=true;
-        menuSound = new sound("Main Title - Fallout New Vegas .wav", 0);
-        //travelMusic = new sound("Traveling2.wav",1); 
-        //menuSound = new sound(,0);
-        
-        
-        
+
     }
 /////////////////////////////////////////////////////////////////////////
     public void animate() {
@@ -322,8 +179,7 @@ public class FalloutGame extends JFrame implements Runnable {
             }
         
             Fallout2map = Toolkit.getDefaultToolkit().getImage("./F02.png");
-            FalloutMenu = Toolkit.getDefaultToolkit().getImage("./Menu1.png");
-                        //rocketImage = Toolkit.getDefaultToolkit().getImage("./animRocket.GIF");
+//            rocketImage = Toolkit.getDefaultToolkit().getImage("./animRocket.GIF");
             reset();    
             //bgSound = new sound("starwars.wav");
             
@@ -331,32 +187,12 @@ public class FalloutGame extends JFrame implements Runnable {
 //        if (gameOver)
 //            return;
         
-        if(start){
-            frame.setSize(Window.WINDOW_WIDTH, Window.WINDOW_HEIGHT);
-            Inventoryframe.setSize(InventoryWindow.INVWINDOW_WIDTH, InventoryWindow.INVWINDOW_HEIGHT);
-
-        }
-        
-
-        else{
-           
-            frame.setSize(Menu.WINDOW_WIDTH, Menu.WINDOW_HEIGHT);
-        
-        }
-
-      
-
-
-           
-        
-        if (menuSound.donePlaying)       
-            menuSound = new sound("Main Title - Fallout New Vegas .wav", 0);
-        
-        
-        
+        //if (bgSound.donePlaying)       
+            //bgSound = new sound("starwars.wav");
         
         timeCount++;
     }
+
 ////////////////////////////////////////////////////////////////////////////
     public void start() {
         if (relaxer == null) {
@@ -371,11 +207,8 @@ public class FalloutGame extends JFrame implements Runnable {
         }
         relaxer = null;
     }
-
 }
 ////////////////////////////////////////////////////////////////////////////
-
-
 class Drawing {
     private static Graphics2D g;
     private static FalloutGame mainClassInst;
@@ -414,8 +247,6 @@ class Drawing {
         g.rotate(-rot  * Math.PI/180.0);
         g.translate(-xpos,-ypos);
     }
-    
-    
 }
 
 

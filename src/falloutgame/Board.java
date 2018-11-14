@@ -23,18 +23,10 @@ public class Board {
             }
         }
     }
-    public static void PlayerMove() {
-        board[3][2] = new Player_Token(Color.BLUE,1);
-        board[5][2] = new Player_Token(Color.MAGENTA,2);
+    public static void PlayerStart() {
+//Creates instance of player's token
+        board[3][2] = new Player_Token(Color.yellow,3,2);
     }
-    public static void PlayerMove2() {
-        board[10][13] = board[3][2];
-        board[3][2] = null;
-        
-        board[10][14] = board[5][2];
-        board[5][2] = null;
-    }
-
 public static void Draw(Graphics2D g) {
 //Calculate the width and height of each board square.
         int ydelta = Window.getHeight2()/NUM_ROWS;
@@ -53,7 +45,7 @@ public static void Draw(Graphics2D g) {
             g.drawLine(Window.getX(zi*xdelta),Window.getY(0),
                     Window.getX(zi*xdelta),Window.getY(Window.getHeight2()));
         }
-        
+      
 //Draw the Path
         for (int i = 1;i<19;i++) {
         g.setColor(Color.GREEN);            
@@ -114,17 +106,15 @@ public static void Draw(Graphics2D g) {
         g.setColor(Color.white);
         City.draw(g, Window.getX(12*xdelta), Window.getY(9*ydelta), xdelta, ydelta);
         City.draw(g, Window.getX(18*xdelta), Window.getY(5*ydelta), xdelta, ydelta);
+        
 //EnemyBases
         EnemyBase.draw(g, Window.getX(18*xdelta), Window.getY(5*ydelta), xdelta, ydelta);
+        
 //End Space
         g.setColor(Color.GREEN);
         g.fillRect(Window.getX(8*xdelta),Window.getY(8*ydelta),xdelta,ydelta);
         g.setColor(Color.black);
         g.drawRect(Window.getX(8*xdelta),Window.getY(8*ydelta),xdelta,ydelta);
-//Draw Movement buttons
-        g.setColor(Color.white);
-            g.setFont(new Font("Arial",Font.PLAIN,25));
-            g.drawString("Game Over", 60, 120);      
         
 //Draw player
         for (int zi = 0;zi<NUM_ROWS;zi++)
@@ -138,92 +128,38 @@ public static void Draw(Graphics2D g) {
             }
         } 
         return;
-    }    
-    //check is you click within the boudaries
-    public static boolean StartPressed(int xpixel, int ypixel){
-//        if(Window.getX(Window.getWidth2()/2)-78<xpixel&&
-//           Window.getX(Window.getWidth2()/2)+22>xpixel&&
-//           Window.getY(Window.getHeight2()/2)-70<ypixel&&
-//           Window.getY(Window.getHeight2()/2)-18>ypixel){
-//            return(true);
-//        }
-        if(Window.getX(Window.getWidth2()/2)-85<xpixel&&
-           Window.getX(Window.getWidth2()/2)+17>xpixel&&
-           Window.getY(Window.getHeight2())-113<ypixel&&
-           Window.getY(Window.getHeight2())-80>ypixel){
-            return(true);
-        }
-        return false;
     }
-    public static boolean checkPress(int xpixel, int ypixel){
-//        if(Window.getX(Window.getWidth2()/2)-78<xpixel&&
-//           Window.getX(Window.getWidth2()/2)+22>xpixel&&
-//           Window.getY(Window.getHeight2()/2)-70<ypixel&&
-//           Window.getY(Window.getHeight2()/2)-18>ypixel){
-//            return(true);
-//        }
-        //if(){
-            return(true);
-        //}
-        //return false;
-    }
-}
+//Displays move options
+public static void DrawMoveOptions(Graphics2D g) {
+    int xdelta = Window.getWidth2()/NUM_COLUMNS;      
+    int ydelta = Window.getHeight2()/NUM_ROWS;
+  
+    Move.draw(g,1,0,xdelta,ydelta);
+} 
+    public static void PickMoveOption(int xpixel,int ypixel) {
 
-//Draw the tokens.        
-//        for (int zi = 0;zi<NUM_ROWS;zi++)
-//        {
-//            for (int zx = 0;zx<NUM_COLUMNS;zx++)
-//            {
-//                if (board[zi][zx] != null)
-//                {
-//                    board[zi][zx].draw(g,zi,zx,xdelta,ydelta);
-//                }
-//            }
-//        } 
-//    }
-//    public static void AddTokenPixel(int xpixel,int ypixel) {
-//
-//        if (xpixel < 0 || xpixel > Window.getWidth2() || ypixel < 0 || 
-//           ypixel > Window.getHeight2())
-//            return;
-//        
-///*
-//        int currRow = 0;
-//        int ydelta = Window.getHeight2()/NUM_ROWS;
-//        int currYVal = ydelta;
-//        while (ypixel > currYVal)
-//        {
-//            currRow++;
-//            currYVal += ydelta;
-//        }
-//*/
-//
-//        int currCol = 0;
-//        int xdelta = Window.getWidth2()/NUM_COLUMNS;
-//        int currXVal = xdelta;
-//        while (xpixel > currXVal)
-//        {
-//            currCol++;
-//            currXVal += xdelta;
-//        }
-//
-//        int currRow = NUM_ROWS-1;
-//        while(currRow > 0 && board[currRow][currCol] != null)
-//        {
-//            currRow--;
-//        }
-//
+        if (xpixel < 0 || xpixel > Window.getWidth2() || ypixel > 0)
+            return;
+        int xdelta = Window.getWidth2()/NUM_COLUMNS;
+        int ydelta = Window.getHeight2()/NUM_ROWS;
+        for (int i=2;i<7;i++) {
+            if (xpixel < xdelta*(i+1) && xpixel > xdelta*i) 
+                MovePlayer(i-1);           
+        }
+
+//          
 //        if (board[0][currCol] == null) {
 //            board[currRow][currCol] = new Token(Player.getCurrentPlayer().getColor());
 //            Player.switchTurn();
 //            numTokens++;
 //            return;
 //        }
-//
-//
-//        return;
-//    }
-//
-//
-//    
+
+    }
+    public static void MovePlayer(int move) {
+                    board[3][2+move] = board[3][2];
+                    board[3][2] = null;  
+   }       
+}
+
 
