@@ -10,8 +10,8 @@ public class Player {
         
     public static void Reset() {
         if (players[0] == null) {
-           players[0] = new Player(Color.red);
-           players[1] = new Player(Color.black);
+           players[0] = new Player(Color.BLUE);
+           players[1] = new Player(Color.MAGENTA);
         }
        currPlayer = players[0];
     }

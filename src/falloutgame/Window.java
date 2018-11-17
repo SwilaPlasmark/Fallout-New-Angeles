@@ -1,16 +1,16 @@
 package falloutgame;
 
 public class Window {
-    protected static final int XBORDER = 20;
-    protected final static int NUM_ROWS = 24;
-    protected final static int NUM_COLUMNS = 28;      
+    private static final int XBORDER = 400;
+    private final static int NUM_ROWS = 24;
+    private final static int NUM_COLUMNS = 28;      
 //    private static final int YBORDER = 20;
     
-    protected static final int TOP_BORDER = 40;
-    protected static final int BOTTOM_BORDER = 20;
+    private static final int TOP_BORDER = 40;
+    private static final int BOTTOM_BORDER = 20;
     
-    protected static final int YTITLE = 30;
-    protected static final int WINDOW_BORDER = 8;
+    private static final int YTITLE = 30;
+    private static final int WINDOW_BORDER = 8;
     
     //static final int WINDOW_WIDTH = 2*(WINDOW_BORDER + XBORDER) + 850;
     //static final int WINDOW_HEIGHT = YTITLE + WINDOW_BORDER + 850;

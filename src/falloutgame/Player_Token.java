@@ -3,7 +3,7 @@ package falloutgame;
 import java.awt.*;
 
 
-public class Player_Token {
+public class Player_Token extends Board_Position{
     private static Image player_image1 = Toolkit.getDefaultToolkit().getImage("./Player1.png");
     private static Image player_image2 = Toolkit.getDefaultToolkit().getImage("./Player2.png");
     
@@ -13,9 +13,9 @@ public class Player_Token {
         playernum=_playernum;
         color = _color; 
     }
-//    public static int PlayerPos() {
-//        return value;
-//    }
+    public int move(int colmove,int currcol){
+        return(currcol+colmove);
+    }
     public Color getColor()
     {
         return (color);
