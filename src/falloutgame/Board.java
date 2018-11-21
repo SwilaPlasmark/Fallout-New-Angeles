@@ -5,7 +5,7 @@ import java.awt.*;
 public class Board {  
     private final static int NUM_ROWS = 20;
     private final static int NUM_COLUMNS = 20;      
-    private static Board_Position board[][] = new Board_Position[NUM_ROWS][NUM_COLUMNS];
+    public static Board_Position board[][] = new Board_Position[NUM_ROWS][NUM_COLUMNS];
     
     //private static City board[][] = new City[NUM_ROWS][NUM_COLUMNS];
    
@@ -153,7 +153,9 @@ public static void Draw(Graphics2D g) {
         g.setColor(Color.white);
             g.setFont(new Font("Arial",Font.PLAIN,25));
             g.drawString("Game Over", 60, 120);      
-        
+//When someone enters a city.
+    if (board[10][13] != null)
+        City.IfSteppedOn(g,10,13);
 //Draw player
         for (int zi = 0;zi<NUM_ROWS;zi++)
         {
@@ -179,62 +181,4 @@ public static void Draw(Graphics2D g) {
     }
  
 }
-
-//Draw the tokens.        
-//        for (int zi = 0;zi<NUM_ROWS;zi++)
-//        {
-//            for (int zx = 0;zx<NUM_COLUMNS;zx++)
-//            {
-//                if (board[zi][zx] != null)
-//                {
-//                    board[zi][zx].draw(g,zi,zx,xdelta,ydelta);
-//                }
-//            }
-//        } 
-//    }
-//    public static void AddTokenPixel(int xpixel,int ypixel) {
-//
-//        if (xpixel < 0 || xpixel > Window.getWidth2() || ypixel < 0 || 
-//           ypixel > Window.getHeight2())
-//            return;
-//        
-///*
-//        int currRow = 0;
-//        int ydelta = Window.getHeight2()/NUM_ROWS;
-//        int currYVal = ydelta;
-//        while (ypixel > currYVal)
-//        {
-//            currRow++;
-//            currYVal += ydelta;
-//        }
-//*/
-//
-//        int currCol = 0;
-//        int xdelta = Window.getWidth2()/NUM_COLUMNS;
-//        int currXVal = xdelta;
-//        while (xpixel > currXVal)
-//        {
-//            currCol++;
-//            currXVal += xdelta;
-//        }
-//
-//        int currRow = NUM_ROWS-1;
-//        while(currRow > 0 && board[currRow][currCol] != null)
-//        {
-//            currRow--;
-//        }
-//
-//        if (board[0][currCol] == null) {
-//            board[currRow][currCol] = new Token(Player.getCurrentPlayer().getColor());
-//            Player.switchTurn();
-//            numTokens++;
-//            return;
-//        }
-//
-//
-//        return;
-//    }
-//
-//
-//    
 

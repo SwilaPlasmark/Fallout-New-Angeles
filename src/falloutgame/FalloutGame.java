@@ -109,7 +109,7 @@ public class FalloutGame extends JFrame implements Runnable {
                 } else if (e.VK_RIGHT == e.getKeyCode()) {
                     
                 } else if (e.VK_SPACE == e.getKeyCode()) {
-                   Board.PlayerMove2();
+                     Board.PlayerMove2();
                 } else if (e.VK_1 == e.getKeyCode()) {
                     if(start)
                     Board.PlayerMove(1);
