@@ -26,10 +26,6 @@ public class Player_Token extends Board_Position{
         if(playernum==1)
         Drawing.drawImage(player_image1, Window.getX(_column*xdelta)-xdelta/2, (Window.getY(_row*ydelta)-ydelta/2), 0, .75, .75);
         else if(playernum==2)
-        Drawing.drawImage(player_image2, Window.getX(_column*xdelta)-xdelta/2, Window.getY(_row*ydelta)-ydelta/2, 0, .75, .75);
-        //else
-        
-        
+        Drawing.drawImage(player_image2, Window.getX(_column*xdelta)-xdelta/2, Window.getY(_row*ydelta)-ydelta/2, 0, .75, .75);     
     }     
-
 }
