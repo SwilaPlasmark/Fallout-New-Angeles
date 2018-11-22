@@ -44,7 +44,6 @@ public class FalloutGame extends JFrame implements Runnable {
     
         
     }
-    
 
     public FalloutGame() {
         addMouseListener(new MouseAdapter() {
@@ -55,9 +54,10 @@ public class FalloutGame extends JFrame implements Runnable {
 // location of the cursor.
                     int xpos = e.getX();
                     int ypos = e.getY();
-                    
+                    if (Board.PopUpCityMenu == true)
+                        Board.SelectOption(xpos, ypos);
                     if(Board.StartPressed(e.getX()-Menu.getX(0),e.getY()-Menu.getY(0))) {
-                      start=true;
+                        start=true;
                     
                      
                       
@@ -109,10 +109,10 @@ public class FalloutGame extends JFrame implements Runnable {
                 } else if (e.VK_RIGHT == e.getKeyCode()) {
                     
                 } else if (e.VK_SPACE == e.getKeyCode()) {
-                   Board.PlayerMove2();
+
                 } else if (e.VK_1 == e.getKeyCode()) {
                     if(start)
-                    Board.PlayerMove(1);
+                    Board.PlayerMove(g,1);
                     Player.switchTurn();
                     
                 }
@@ -258,8 +258,8 @@ public class FalloutGame extends JFrame implements Runnable {
             g.drawString("Start", Menu.getX(Menu.WIDTH/2-10), Menu.getY(Menu.HEIGHT-40));
         }
        if(start){
-       g.drawImage(Fallout2map,Window.getX(0),Window.getY(0),
-                Window.getWidth2(),Window.getHeight2(),this);
+       g.drawImage(Fallout2map,Window.getX(0),Window.getY(0),Window.getWidth2(),Window.getHeight2(),this);
+       
         Board.Draw(g);
         
         g.setColor(Color.black);
