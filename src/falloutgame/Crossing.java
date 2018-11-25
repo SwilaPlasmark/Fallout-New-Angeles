@@ -1,20 +1,33 @@
-
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package falloutgame;
 
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 
-public class City extends ImportantArea{
-
-    City(String _name,int _row, int _col) {
+public class Crossing extends ImportantArea{
+    int direct;
+    Crossing(String _name,int _row, int _col,int _direct) {
         super(_name,_row,_col);
+        direct=_direct;
     }
+    public void setDirection(int _direct){
+        direct=_direct;
+    }
+    
+    public int getDirection(){
+        return direct;
+    }
+    
     public void draw(Graphics2D g, int xdelta, int ydelta) {
-        g.setColor(Color.WHITE);
-        g.fillOval(Window.getX(col*xdelta),Window.getY(row*ydelta),xdelta,ydelta);        
+        g.setColor(Color.CYAN);
+        g.fillRect(Window.getX(col*xdelta),Window.getY(row*ydelta),xdelta,ydelta);        
         g.setColor(Color.BLACK);
-        g.drawOval(Window.getX(col*xdelta),Window.getY(row*ydelta),xdelta,ydelta);     
+        g.drawRect(Window.getX(col*xdelta),Window.getY(row*ydelta),xdelta,ydelta);     
     }
     public static void drawMenu(Graphics2D g) {
         g.setColor(Color.white);

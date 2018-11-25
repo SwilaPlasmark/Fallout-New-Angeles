@@ -3,11 +3,18 @@ package falloutgame;
 import java.awt.*;
 
 public class Board {  
-    private final static int NUM_ROWS = 20;
-    private final static int NUM_COLUMNS = 20;      
-    private static Board_Position board[][] = new Board_Position[NUM_ROWS][NUM_COLUMNS];
-    
+    public final static int NUM_ROWS = 20;
+    public final static int NUM_COLUMNS = 20;      
+    public static Board_Position board[][] = new Board_Position[NUM_ROWS][NUM_COLUMNS]; 
     //private static City board[][] = new City[NUM_ROWS][NUM_COLUMNS];
+    public static boolean PopUpCityMenu = false;
+    public static boolean PopUpEnemyBaseMenu = false;
+    public static boolean PopUpCrossroadMenu = false;
+    public static int dirrMove = 0;
+    
+    
+    
+    public static Board_Position NewPostion = null;        
    
     private static int numTokens;
     private final static int NUM_CONNECT = 4;
@@ -24,50 +31,129 @@ public class Board {
             }
         }
         board[3][2] = new Player_Token(Color.BLUE,1);
-        board[5][2] = new Player_Token(Color.MAGENTA,2);
+        
+       
+        board[3][1] = new Player_Token(Color.MAGENTA,2);
+        //cities
+        board[10][13] = new City("Sunny Shades",10,13);
+        board[3][8] = new City("New Vegas",3,8);
+        board[3][12] = new City("Viper City",3,12); 
+        board[6][19] = new EnemyBase("Raider Camp",6,19);
+        board[3][15] = new EnemyBase("Super Mutant Camp",3,15);        
+        //crossings
+        board[3][13] = new Crossing("",3,13,3);
+        
+        //board[3][8] = new Crossing("",3,8);
+        //board[3][12] = new Crossing("",3,12); 
+        //board[6][19] = new Crossing("",6,19);
+        //board[3][15] = new Crossing("",3,15);
+        
+        
     }
-    public static void PlayerMove(int numMoved) {
+    public static void PlayerMove(Graphics2D g,int numMoved) {
         int newRow=0;
         int newCol=0;
         int currRow = 0; 
-        int currCol = 0; 
+        int currCol = 0;
+        int rowDir=0;
+        int colDir=0;
         for (int zi = 0;zi<NUM_ROWS;zi++)
             {
                 for (int zx = 0;zx<NUM_COLUMNS;zx++)
                 {
-                   if(board[zi][zx]!=null&&((Player_Token)board[zi][zx]).getColor()==Player.getCurrentPlayer().getColor()){
+                   if(board[zi][zx]!=null&& board[zi][zx] instanceof Player_Token && 
+                   ((Player_Token)board[zi][zx]).getColor()==Player.getCurrentPlayer().getColor()){
                         //if(rowdir==1)
                         //newRow=board[zi][zx].move(move,zi);
                         
-                        newCol=((Player_Token)board[zi][zx]).move(numMoved,zx);
-                        //currCol = ; 
-                        //currRow = newRow;
+                        /*ALLREAD
+                            rowDir 1 is the RIGHT(East)
+                            rowDir -1 is the LEFT(West)
+                            colDir 1 is UP(North)
+                            colDir -1 is Down(South)
+                        
+                            dirrMove 0 = right
+                            dirrMove 1 = left
+                            dirrMove 2 = up
+                            dirrmove 3 = down;
+                        
+                        */
+                        
                         currRow=zi;
                         currCol=zx;
+                        
+                        
+                        
+                        if(dirrMove==0){
+                        newCol=((Player_Token)board[zi][zx]).move(numMoved,zx);
+                        newRow=currRow;
+                        }
+                        else if(dirrMove==1){
+                        newCol=((Player_Token)board[zi][zx]).move(-numMoved,zx);
+                        newRow=currRow;
+                        }
+                        else if(dirrMove==2) {
+                        newRow=((Player_Token)board[zi][zx]).move(numMoved,zi);
+                        newCol=currCol;
+                        }
+                        else if(dirrMove==3) {
+                        newRow=((Player_Token)board[zi][zx]).move(-numMoved,zi);
+                        newCol=currCol;
+                        }
                    }
-                    
                 }
             }
+            
+            if (board[newRow][newCol] instanceof City) {              
+                board[newRow+1][newCol] = board[currRow][newCol];
+                NewPostion = board[currRow+1][newCol];             
+                Board_Position.setTempStoredPos(currRow, newCol);
+                board[newRow][newCol] = null;
+                PopUpCityMenu = true;
+            }
+            else if (board[currRow][newCol] instanceof EnemyBase) {
+                board[currRow+1][newCol] = board[currRow][newCol];
+                NewPostion = board[currRow+1][newCol];             
+                Board_Position.setTempStoredPos(currRow, newCol);
+                board[currRow][newCol] = null;
+                PopUpEnemyBaseMenu = true;          
+            }
+            else if (board[currRow][newCol] instanceof Crossing) {
+                board[currRow+1][newCol] = board[currRow][newCol];
+                NewPostion = board[currRow+1][newCol];             
+                Board_Position.setTempStoredPos(currRow, newCol);
+                board[currRow][newCol] = null;
+                dirrMove=((Crossing)board[currRow][newCol]).getDirection();
+            }
+            
+            else {
+                PopUpCityMenu = false;
+                PopUpEnemyBaseMenu = false;
+            }
+            
+        if (board[currRow][currCol] == board[Board_Position.getRow()][Board_Position.getCol()]) {
+            board[currRow][newCol] = board[currRow][currCol];
+            board[currRow][currCol] = null;            
+            board[Board_Position.getRow()][Board_Position.getCol()] = NewPostion;
+            NewPostion = null;
+        }
+        else {
             //if(board[currRow][newCol].getColor()==Player.getOtherPlayer().getColor()){
-            board[currRow][newCol]=board[currRow][currCol];
-            
-            
-            board[currRow][currCol]=null;
-            //}
-    }
-    public static void PlayerMove2() {
-        board[10][13] = board[3][2];
-        board[3][2] = null;
-        
-        board[10][14] = board[5][2];
-        board[5][2] = null;
+                if(board[newRow][newCol] instanceof Player_Token){
+                Player.switchTurn();
+                return;
+                }
+                board[currRow][newCol] = board[currRow][currCol];
+                board[currRow][currCol] = null;
+                
+        //}
+        }
     }
 
 public static void Draw(Graphics2D g) {
 //Calculate the width and height of each board square.
         int ydelta = Window.getHeight2()/NUM_ROWS;
-        int xdelta = Window.getWidth2()/NUM_COLUMNS;
-        
+        int xdelta = Window.getWidth2()/NUM_COLUMNS;          
  //Draw the grid.
         g.setColor(Color.GREEN);
         for (int zi = 1;zi<NUM_ROWS;zi++)
@@ -75,13 +161,10 @@ public static void Draw(Graphics2D g) {
             g.drawLine(Window.getX(0),Window.getY(zi*ydelta),
                     Window.getX(Window.getWidth2()),Window.getY(zi*ydelta));
         }
-        
         for (int zi = 1;zi<NUM_COLUMNS;zi++)
         {
-            g.drawLine(Window.getX(zi*xdelta),Window.getY(0),
-                    Window.getX(zi*xdelta),Window.getY(Window.getHeight2()));
-        }
-        
+            g.drawLine(Window.getX(zi*xdelta),Window.getY(0),Window.getX(zi*xdelta),Window.getY(Window.getHeight2()));
+        }     
 //Draw the Path
         for (int i = 1;i<19;i++) {
         g.setColor(Color.GREEN);            
@@ -137,13 +220,6 @@ public static void Draw(Graphics2D g) {
         g.setColor(Color.black);
         g.drawRect(Window.getX(12*xdelta),Window.getY(i*ydelta),xdelta,ydelta);
         }
-        
-//Cities
-        g.setColor(Color.white);
-        City.draw(g, Window.getX(12*xdelta), Window.getY(9*ydelta), xdelta, ydelta);
-        City.draw(g, Window.getX(18*xdelta), Window.getY(5*ydelta), xdelta, ydelta);
-//EnemyBases
-        EnemyBase.draw(g, Window.getX(18*xdelta), Window.getY(5*ydelta), xdelta, ydelta);
 //End Space
         g.setColor(Color.GREEN);
         g.fillRect(Window.getX(8*xdelta),Window.getY(8*ydelta),xdelta,ydelta);
@@ -151,25 +227,65 @@ public static void Draw(Graphics2D g) {
         g.drawRect(Window.getX(8*xdelta),Window.getY(8*ydelta),xdelta,ydelta);
 //Draw Movement buttons
         g.setColor(Color.white);
-            g.setFont(new Font("Arial",Font.PLAIN,25));
-            g.drawString("Game Over", 60, 120);      
-        
-//Draw player
+        g.setFont(new Font("Arial",Font.PLAIN,25));
+        g.drawString("Game Over", 60, 120); 
+//Draw crossroads
         for (int zi = 0;zi<NUM_ROWS;zi++)
         {
             for (int zx = 0;zx<NUM_COLUMNS;zx++)
             {
-                if (board[zi][zx] != null)
-                {
+                if (board[zi][zx] != null && board[zi][zx] instanceof Crossing)
+                    ((Crossing)board[zi][zx]).draw(g,xdelta, ydelta);
+            }
+        }
+
+//Draw EnemyBases
+        for (int zi = 0;zi<NUM_ROWS;zi++)
+        {
+            for (int zx = 0;zx<NUM_COLUMNS;zx++)
+            {
+                if (board[zi][zx] != null && board[zi][zx] instanceof EnemyBase)
+                    ((EnemyBase)board[zi][zx]).draw(g,xdelta, ydelta);
+            }
+        }
+//Draw Cities
+        for (int zi = 0;zi<NUM_ROWS;zi++)
+        {
+            for (int zx = 0;zx<NUM_COLUMNS;zx++)
+            {
+                if (board[zi][zx] != null && board[zi][zx] instanceof City)
+                    ((City)board[zi][zx]).draw(g,xdelta, ydelta);
+            }
+        }
+//Draw Player Tokens
+        for (int zi = 0;zi<NUM_ROWS;zi++)
+        {
+            for (int zx = 0;zx<NUM_COLUMNS;zx++)
+            {
+                if (board[zi][zx] != null && board[zi][zx] instanceof Player_Token) {
                     ((Player_Token)board[zi][zx]).draw(g, zi, zx, xdelta, ydelta);
+                    
                 }
             }
-        } 
+        }
+//Display PopUp Menus         
+        if (PopUpCityMenu) {
+            City.drawMenu(g);
+        }
+        if (PopUpEnemyBaseMenu) {
+            EnemyBase.drawMenu(g);
+        }        
+        
         return;
-    }    
+    }
+    public static void SelectOption(int xpixel, int ypixel){
+           if (xpixel < 170 && xpixel > 70 && ypixel < 240 && ypixel > 200)
+                System.out.println("you have selected barter");
+           if (xpixel < 360 && xpixel > 260 && ypixel < 240 && ypixel > 200)
+                System.out.println("you have selected rest");           
+    }
     //check is you click within the boudaries
     public static boolean StartPressed(int xpixel, int ypixel){
-
         if(Menu.getX(Menu.WINDOW_WIDTH/2)-60<xpixel&&
            Menu.getX(Menu.WINDOW_WIDTH/2)+40>xpixel&&
            438<ypixel&&474>ypixel){
@@ -177,64 +293,5 @@ public static void Draw(Graphics2D g) {
         }
         return false;
     }
- 
 }
-
-//Draw the tokens.        
-//        for (int zi = 0;zi<NUM_ROWS;zi++)
-//        {
-//            for (int zx = 0;zx<NUM_COLUMNS;zx++)
-//            {
-//                if (board[zi][zx] != null)
-//                {
-//                    board[zi][zx].draw(g,zi,zx,xdelta,ydelta);
-//                }
-//            }
-//        } 
-//    }
-//    public static void AddTokenPixel(int xpixel,int ypixel) {
-//
-//        if (xpixel < 0 || xpixel > Window.getWidth2() || ypixel < 0 || 
-//           ypixel > Window.getHeight2())
-//            return;
-//        
-///*
-//        int currRow = 0;
-//        int ydelta = Window.getHeight2()/NUM_ROWS;
-//        int currYVal = ydelta;
-//        while (ypixel > currYVal)
-//        {
-//            currRow++;
-//            currYVal += ydelta;
-//        }
-//*/
-//
-//        int currCol = 0;
-//        int xdelta = Window.getWidth2()/NUM_COLUMNS;
-//        int currXVal = xdelta;
-//        while (xpixel > currXVal)
-//        {
-//            currCol++;
-//            currXVal += xdelta;
-//        }
-//
-//        int currRow = NUM_ROWS-1;
-//        while(currRow > 0 && board[currRow][currCol] != null)
-//        {
-//            currRow--;
-//        }
-//
-//        if (board[0][currCol] == null) {
-//            board[currRow][currCol] = new Token(Player.getCurrentPlayer().getColor());
-//            Player.switchTurn();
-//            numTokens++;
-//            return;
-//        }
-//
-//
-//        return;
-//    }
-//
-//
-//    
 

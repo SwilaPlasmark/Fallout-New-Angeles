@@ -44,7 +44,6 @@ public class FalloutGame extends JFrame implements Runnable {
     
         
     }
-    
 
     public FalloutGame() {
         addMouseListener(new MouseAdapter() {
@@ -55,9 +54,10 @@ public class FalloutGame extends JFrame implements Runnable {
 // location of the cursor.
                     int xpos = e.getX();
                     int ypos = e.getY();
-                    
+                    if (Board.PopUpCityMenu == true)
+                        Board.SelectOption(xpos, ypos);
                     if(Board.StartPressed(e.getX()-Menu.getX(0),e.getY()-Menu.getY(0))) {
-                      start=true;
+                        start=true;
                     
                      
                       
@@ -109,12 +109,24 @@ public class FalloutGame extends JFrame implements Runnable {
                 } else if (e.VK_RIGHT == e.getKeyCode()) {
                     
                 } else if (e.VK_SPACE == e.getKeyCode()) {
-                   Board.PlayerMove2();
+
                 } else if (e.VK_1 == e.getKeyCode()) {
                     if(start)
-                    Board.PlayerMove(1);
+                    Board.PlayerMove(g,1);
                     Player.switchTurn();
-                    
+                } else if (e.VK_2 == e.getKeyCode()) {
+                    if(start)
+                    Board.PlayerMove(g,2);
+                    Player.switchTurn();
+                } else if (e.VK_3== e.getKeyCode()) {
+                    if(start)
+                    Board.PlayerMove(g,3);
+                    Player.switchTurn();    
+                } else if (e.VK_4== e.getKeyCode()) {
+                    if(start)
+                    Board.PlayerMove(g,4);
+                    Player.switchTurn();    
+                
                 }
                 else if(e.VK_M==e.getKeyCode()){
                     if(!stopsounds)
@@ -258,8 +270,8 @@ public class FalloutGame extends JFrame implements Runnable {
             g.drawString("Start", Menu.getX(Menu.WIDTH/2-10), Menu.getY(Menu.HEIGHT-40));
         }
        if(start){
-       g.drawImage(Fallout2map,Window.getX(0),Window.getY(0),
-                Window.getWidth2(),Window.getHeight2(),this);
+       g.drawImage(Fallout2map,Window.getX(0),Window.getY(0),Window.getWidth2(),Window.getHeight2(),this);
+       
         Board.Draw(g);
         
         g.setColor(Color.black);
@@ -342,6 +354,7 @@ public class FalloutGame extends JFrame implements Runnable {
         
         if (menuSound.donePlaying)       
             menuSound = new sound("Main Title - Fallout New Vegas .wav", 0);
+        
         if(start&&travelMusic.donePlaying){
             int randtype=(int)(Math.random()*2);
             if(start&&!radiostatus) 
