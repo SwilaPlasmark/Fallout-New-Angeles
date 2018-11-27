@@ -1,28 +1,25 @@
 
 package falloutgame;
+
 import java.awt.*;
 
 public class Board {  
     public final static int NUM_ROWS = 20;
     public final static int NUM_COLUMNS = 20;      
     public static Board_Position board[][] = new Board_Position[NUM_ROWS][NUM_COLUMNS]; 
-    //private static City board[][] = new City[NUM_ROWS][NUM_COLUMNS];
+    
     public static boolean PopUpCityMenu = false;
     public static boolean PopUpEnemyBaseMenu = false;
     public static boolean PopUpCrossroadMenu = false;
-    public static int dirrMove = 0;
-    
-    
+    public static boolean RandomEventOccured = false;
     
     public static Board_Position NewPostion = null;        
    
-    private static int numTokens;
-    private final static int NUM_CONNECT = 4;
     private static int points;
-   
+
+    public static RandomEvent Event;
+            
     public static void Reset() {
- 
-        //numTokens = 0;
         for (int zi = 0;zi<NUM_ROWS;zi++)
         {
             for (int zx = 0;zx<NUM_COLUMNS;zx++)
@@ -30,27 +27,26 @@ public class Board {
                 board[zi][zx] = null;
             }
         }
+//Players        
         board[3][2] = new Player_Token(Color.BLUE,1);
-        
-       
         board[3][1] = new Player_Token(Color.MAGENTA,2);
-        //cities
+//Cities
         board[10][13] = new City("Sunny Shades",10,13);
         board[3][8] = new City("New Vegas",3,8);
-        board[3][12] = new City("Viper City",3,12); 
+        //board[3][12] = new City("Viper City",3,12); 
+//EnemyBases
         board[6][19] = new EnemyBase("Raider Camp",6,19);
         board[3][15] = new EnemyBase("Super Mutant Camp",3,15);        
-        //crossings
+//Crossings
         board[3][13] = new Crossing("",3,13,3);
-        
         //board[3][8] = new Crossing("",3,8);
         //board[3][12] = new Crossing("",3,12); 
         //board[6][19] = new Crossing("",6,19);
         //board[3][15] = new Crossing("",3,15);
-        
-        
     }
+    
     public static void PlayerMove(Graphics2D g,int numMoved) {
+        RandomEventOccured = false;
         int newRow=0;
         int newCol=0;
         int currRow = 0; 
@@ -61,8 +57,7 @@ public class Board {
             {
                 for (int zx = 0;zx<NUM_COLUMNS;zx++)
                 {
-                   if(board[zi][zx]!=null&& board[zi][zx] instanceof Player_Token && 
-                   ((Player_Token)board[zi][zx]).getColor()==Player.getCurrentPlayer().getColor()){
+                    if(board[zi][zx]!=null&& board[zi][zx] instanceof Player_Token && ((Player_Token)board[zi][zx]).getColor()==Player.getCurrentPlayer().getColor()){
                         //if(rowdir==1)
                         //newRow=board[zi][zx].move(move,zi);
                         
@@ -76,77 +71,80 @@ public class Board {
                             dirrMove 1 = left
                             dirrMove 2 = up
                             dirrmove 3 = down;
-                        
                         */
                         
                         currRow=zi;
                         currCol=zx;
                         
-                        
-                        
-                        if(dirrMove==0){
+                        if(Player.getCurrentPlayer().getDirection() == 0){
                         newCol=((Player_Token)board[zi][zx]).move(numMoved,zx);
                         newRow=currRow;
-                        }
-                        else if(dirrMove==1){
+                        }                        
+                        else if(Player.getCurrentPlayer().getDirection() == 1){
                         newCol=((Player_Token)board[zi][zx]).move(-numMoved,zx);
                         newRow=currRow;
                         }
-                        else if(dirrMove==2) {
+                        else if(Player.getCurrentPlayer().getDirection() == 2) {
                         newRow=((Player_Token)board[zi][zx]).move(numMoved,zi);
                         newCol=currCol;
                         }
-                        else if(dirrMove==3) {
+                        else if(Player.getCurrentPlayer().getDirection() == 3) {
                         newRow=((Player_Token)board[zi][zx]).move(-numMoved,zi);
-                        newCol=currCol;
-                        }
+                        newCol=currCol;                        
                    }
                 }
             }
-            
-            if (board[newRow][newCol] instanceof City) {              
-                board[newRow+1][newCol] = board[currRow][newCol];
-                NewPostion = board[currRow+1][newCol];             
-                Board_Position.setTempStoredPos(currRow, newCol);
-                board[newRow][newCol] = null;
-                PopUpCityMenu = true;
-            }
-            else if (board[currRow][newCol] instanceof EnemyBase) {
-                board[currRow+1][newCol] = board[currRow][newCol];
-                NewPostion = board[currRow+1][newCol];             
-                Board_Position.setTempStoredPos(currRow, newCol);
-                board[currRow][newCol] = null;
-                PopUpEnemyBaseMenu = true;          
-            }
-            else if (board[currRow][newCol] instanceof Crossing) {
-                board[currRow+1][newCol] = board[currRow][newCol];
-                NewPostion = board[currRow+1][newCol];             
-                Board_Position.setTempStoredPos(currRow, newCol);
-                board[currRow][newCol] = null;
-                dirrMove=((Crossing)board[currRow][newCol]).getDirection();
-            }
-            
-            else {
-                PopUpCityMenu = false;
-                PopUpEnemyBaseMenu = false;
-            }
-            
+        }
+        if(board[newRow][newCol] instanceof Player_Token){
+            Player.switchTurn();
+            return;
+        }
+        else if(board[newRow][newCol] instanceof City) {              
+            board[2][2] = board[newRow][newCol];
+            NewPostion = board[2][2];             
+            Board_Position.setTempStoredPos(newRow, newCol);
+            board[newRow][newCol] = null;
+            PopUpCityMenu = true;
+        }
+        else if (board[newRow][newCol] instanceof EnemyBase) {
+            board[2][2] = board[newRow][newCol];
+            NewPostion = board[2][2];             
+            Board_Position.setTempStoredPos(newRow, newCol);
+            board[newRow][newCol] = null;
+            PopUpEnemyBaseMenu = true;
+        }
+        else if (board[newRow][newCol] instanceof Crossing) {
+            board[2][2] = board[newRow][newCol];
+            NewPostion = board[2][2];             
+            Board_Position.setTempStoredPos(newRow, newCol);
+            Player.getCurrentPlayer().changeDirection(2);
+            PopUpEnemyBaseMenu = true;     
+        }
+        else {
+            PopUpCityMenu = false;
+            PopUpEnemyBaseMenu = false;
+            PopUpCrossroadMenu = false;
+            RandomEventOccured = true;
+        }
+//If the Player's position is the city's old position            
         if (board[currRow][currCol] == board[Board_Position.getRow()][Board_Position.getCol()]) {
-            board[currRow][newCol] = board[currRow][currCol];
-            board[currRow][currCol] = null;            
+            board[newRow][newCol] = board[currRow][currCol];
+            board[currRow][currCol] = null;
+            
+            if (RandomEventOccured) {
+                Event = new RandomEvent();
+            }
+            
             board[Board_Position.getRow()][Board_Position.getCol()] = NewPostion;
             NewPostion = null;
         }
         else {
-            //if(board[currRow][newCol].getColor()==Player.getOtherPlayer().getColor()){
-                if(board[newRow][newCol] instanceof Player_Token){
-                Player.switchTurn();
-                return;
-                }
-                board[currRow][newCol] = board[currRow][currCol];
-                board[currRow][currCol] = null;
-                
-        //}
+            if (RandomEventOccured) {
+                Event = new RandomEvent(); 
+            }
+            
+            board[newRow][newCol] = board[currRow][currCol];               
+            board[currRow][currCol] = null;
         }
     }
 
@@ -263,8 +261,7 @@ public static void Draw(Graphics2D g) {
             for (int zx = 0;zx<NUM_COLUMNS;zx++)
             {
                 if (board[zi][zx] != null && board[zi][zx] instanceof Player_Token) {
-                    ((Player_Token)board[zi][zx]).draw(g, zi, zx, xdelta, ydelta);
-                    
+                    ((Player_Token)board[zi][zx]).draw(g, zi, zx, xdelta, ydelta); 
                 }
             }
         }
@@ -275,7 +272,12 @@ public static void Draw(Graphics2D g) {
         if (PopUpEnemyBaseMenu) {
             EnemyBase.drawMenu(g);
         }        
-        
+        if (PopUpEnemyBaseMenu) {
+            Crossing.drawMenu(g);
+        }
+        if (RandomEventOccured) {
+            Event.draw(g);
+        }
         return;
     }
     public static void SelectOption(int xpixel, int ypixel){

@@ -30,21 +30,35 @@ public class Crossing extends ImportantArea{
         g.drawRect(Window.getX(col*xdelta),Window.getY(row*ydelta),xdelta,ydelta);     
     }
     public static void drawMenu(Graphics2D g) {
-        g.setColor(Color.white);
+        g.setColor(Player.getOtherPlayer().getColor());
         g.fillRect(Window.getX(-370), Window.getY(100), 350, 600);
         g.setColor(Color.black);
         g.setFont(new Font("Times New Roman",Font.PLAIN,20));
         if (Player.getOtherPlayer().getColor() == Color.BLUE) {
-            g.drawString("Player 1 has entered a city", Window.getX(-360), Window.getY(120));    
+            g.drawString("Where would you like to go?", Window.getX(-360), Window.getY(160));   
+            g.drawString("Player 1 entered a fork in the road", Window.getX(-360), Window.getY(120));    
         }
         else {
-            g.drawString("Player 2 has entered a city", Window.getX(-360), Window.getY(120));   
+            g.drawString("Where would you like to go?", Window.getX(-360), Window.getY(160));   
+            g.drawString("Player 2 entered a fork in the road", Window.getX(-360), Window.getY(120));
+            
         }
-        g.fillRect(Window.getX(-340), Window.getY(130), 100, 40);
-        g.fillRect(Window.getX(-150), Window.getY(130), 100, 40);
+        g.fillRect(Window.getX(-340), Window.getY(230), 100, 40);
+        g.fillRect(Window.getX(-150), Window.getY(230), 100, 40);
+        
+        g.fillRect(Window.getX(-340), Window.getY(430), 100, 40);
+        g.fillRect(Window.getX(-150), Window.getY(430), 100, 40);
+        
         g.setColor(Color.white);
         g.setFont(new Font("Times New Roman",Font.PLAIN,20));
-        g.drawString("Barter", Window.getX(-320), Window.getY(150));
-        g.drawString("Rest", Window.getX(-120), Window.getY(150));
+        
+        g.drawString("North", Window.getX(-320), Window.getY(250));
+        
+        g.drawString("South", Window.getX(-120), Window.getY(250));
+        
+        g.drawString("East", Window.getX(-320), Window.getY(450));
+        
+        g.drawString("West", Window.getX(-120), Window.getY(450));
+    
     }    
 }

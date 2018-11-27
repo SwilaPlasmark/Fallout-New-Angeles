@@ -17,6 +17,7 @@ public class Player_Token extends Board_Position{
     public int move(int Spacemove,int currSpace){
         return(currSpace+Spacemove);
     }
+    
     public Color getColor()
     {
         return (color);

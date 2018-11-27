@@ -6,7 +6,10 @@ public class Player {
     private static Player currPlayer;
     private static Player players[] = new Player[2];
     private int points;
-    private Color color;  
+    private Color color;
+    private int direction;
+    private int SpacesMoved;  
+    
         
     public static void Reset() {
         if (players[0] == null) {
@@ -18,6 +21,7 @@ public class Player {
     Player(Color _color) {
        points = 0;
        color = _color;
+       direction = 0;
     }
     
     public static Player getCurrentPlayer() {
@@ -33,7 +37,12 @@ public class Player {
     public Color getColor() {
         return color;
     }
-
+    public int getDirection() {
+        return direction;
+    }    
+    public void changeDirection(int newDirection) {
+        direction = newDirection;
+    }
     public static Player getOtherPlayer() {
         if (players[0] == currPlayer)
             return players[1];

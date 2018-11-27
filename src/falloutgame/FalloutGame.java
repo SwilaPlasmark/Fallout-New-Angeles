@@ -39,10 +39,6 @@ public class FalloutGame extends JFrame implements Runnable {
         frame.setSize(Menu.WINDOW_WIDTH, Menu.WINDOW_HEIGHT);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
-        
-       
-    
-        
     }
 
     public FalloutGame() {
@@ -109,24 +105,27 @@ public class FalloutGame extends JFrame implements Runnable {
                 } else if (e.VK_RIGHT == e.getKeyCode()) {
                     
                 } else if (e.VK_SPACE == e.getKeyCode()) {
-
+                    
                 } else if (e.VK_1 == e.getKeyCode()) {
-                    if(start)
+                    if(start){
                     Board.PlayerMove(g,1);
                     Player.switchTurn();
-                } else if (e.VK_2 == e.getKeyCode()) {
-                    if(start)
-                    Board.PlayerMove(g,2);
-                    Player.switchTurn();
-                } else if (e.VK_3== e.getKeyCode()) {
-                    if(start)
-                    Board.PlayerMove(g,3);
-                    Player.switchTurn();    
-                } else if (e.VK_4== e.getKeyCode()) {
-                    if(start)
-                    Board.PlayerMove(g,4);
-                    Player.switchTurn();    
-                
+                    }
+//                } else if (e.VK_2 == e.getKeyCode()) {
+//                    if(start){
+//                    Board.PlayerMove(g,2);
+//                    Player.switchTurn();
+//                    }
+//                } else if (e.VK_3== e.getKeyCode()) {
+//                    if(start){
+//                    Board.PlayerMove(g,3);
+//                    Player.switchTurn();
+//                    }
+//                } else if (e.VK_4== e.getKeyCode()) {
+//                    if(start){
+//                    Board.PlayerMove(g,4);
+//                    Player.switchTurn(); 
+//                    }
                 }
                 else if(e.VK_M==e.getKeyCode()){
                     if(!stopsounds)
@@ -146,13 +145,14 @@ public class FalloutGame extends JFrame implements Runnable {
 
                        else if(start&&!radiostatus) 
                        SetAmbiantAudio(randtype);
-                    
+                       
                        
                        
                     }
                     
                     
                 }
+                
                 else if(e.VK_ENTER==e.getKeyCode()){
                 start=true;  
                 }
@@ -355,13 +355,13 @@ public class FalloutGame extends JFrame implements Runnable {
         if (menuSound.donePlaying)       
             menuSound = new sound("Main Title - Fallout New Vegas .wav", 0);
         
-        if(start&&travelMusic.donePlaying){
-            int randtype=(int)(Math.random()*2);
-            if(start&&!radiostatus) 
-            SetAmbiantAudio(randtype);
-        }
-        
-        
+//        if(start&&travelMusic.donePlaying){
+//            int randtype=(int)(Math.random()*2);
+//            if(start&&!radiostatus) 
+//            SetAmbiantAudio(randtype);
+//        }
+//        
+//        
         
         timeCount++;
     }
