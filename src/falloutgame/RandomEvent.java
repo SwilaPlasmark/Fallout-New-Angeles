@@ -10,13 +10,18 @@ public class RandomEvent {
     private final int Event_3 = 9;
     private final int Event_4 = 10;
     private final int Event_5 = 11;
+    
     private final int Event_6 = 12;
     private final int Event_7 = 13;
-    
+    private int Weapondrop;
     private int Event;
     
     RandomEvent() {
         Event = (int)(Math.random()*14);        
+        Weapondrop = (int)(Math.random()*5);        
+        
+        //Event = 11;        
+
     }
     public void draw(Graphics2D g) {
         g.setColor(Color.white);
@@ -37,7 +42,16 @@ public class RandomEvent {
             g.drawString("You have found food", Window.getX(-360), Window.getY(120));
         }    
         else if (Event == Event_5) {
-            g.drawString("You have found a gun", Window.getX(-360), Window.getY(120));
+            g.drawString("You have found a basic pistol", Window.getX(-360), Window.getY(120));
+            
+            Player.getCurrentPlayer().addWeapons("10mm Pistol",15);
+            
+        } 
+        else if (Event == Event_5) {
+            g.drawString("You have found a basic pistol", Window.getX(-360), Window.getY(120));
+            
+            Player.getCurrentPlayer().addWeapons("10mm Pistol",15);
+            
         } 
         else if (Event == Event_6) {
             g.drawString("You are Ill", Window.getX(-360), Window.getY(120));

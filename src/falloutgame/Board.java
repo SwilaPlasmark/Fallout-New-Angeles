@@ -9,9 +9,12 @@ public class Board {
     public static Board_Position board[][] = new Board_Position[NUM_ROWS][NUM_COLUMNS]; 
     
     public static boolean PopUpCityMenu = false;
-    public static boolean PopUpEnemyBaseMenu = false;
+    public static boolean BaseEntered = false;
     public static boolean PopUpCrossroadMenu = false;
     public static boolean RandomEventOccured = false;
+    public static boolean PopUpCombatMenu = false;
+
+
     
     public static Board_Position NewPostion = null;        
    
@@ -38,11 +41,18 @@ public class Board {
         board[6][19] = new EnemyBase("Raider Camp",6,19);
         board[3][15] = new EnemyBase("Super Mutant Camp",3,15);        
 //Crossings
-        board[3][13] = new Crossing("",3,13,3);
-        //board[3][8] = new Crossing("",3,8);
-        //board[3][12] = new Crossing("",3,12); 
-        //board[6][19] = new Crossing("",6,19);
-        //board[3][15] = new Crossing("",3,15);
+        board[3][11] = new EnemyBase("Super Mutant Camp",3,11);        
+        board[3][13] = new Crossing("",3,13,2);
+        board[3][19] = new Crossing("",3,19,1);
+        board[15][13] = new Crossing("",15,13,1); 
+        board[15][19] = new Crossing("",15,19,2);
+        board[19][19] = new Crossing("",19,19,1);
+        board[15][10] = new Crossing("",15,10,2);
+        board[19][10] = new Crossing("",19,10,1);
+        board[19][3] = new Crossing("",19,3,3);
+        board[5][3] = new Crossing("",5,3,0);
+        board[5][10] = new Crossing("",5,10,2);
+        board[9][10] = new Crossing("",9,10,1);
     }
     
     public static void PlayerMove(Graphics2D g,int numMoved) {
@@ -69,8 +79,8 @@ public class Board {
                         
                             dirrMove 0 = right
                             dirrMove 1 = left
-                            dirrMove 2 = up
-                            dirrmove 3 = down;
+                            dirrMove 2 = down
+                            dirrmove 3 = up;
                         */
                         
                         currRow=zi;
@@ -111,18 +121,19 @@ public class Board {
             NewPostion = board[2][2];             
             Board_Position.setTempStoredPos(newRow, newCol);
             board[newRow][newCol] = null;
-            PopUpEnemyBaseMenu = true;
+            BaseEntered = true;
+
         }
         else if (board[newRow][newCol] instanceof Crossing) {
             board[2][2] = board[newRow][newCol];
             NewPostion = board[2][2];             
             Board_Position.setTempStoredPos(newRow, newCol);
-            Player.getCurrentPlayer().changeDirection(2);
-            PopUpEnemyBaseMenu = true;     
+            Player.getCurrentPlayer().changeDirection(((Crossing)board[newRow][newCol]).getDirection());
+            PopUpCrossroadMenu = true;     
         }
         else {
             PopUpCityMenu = false;
-            PopUpEnemyBaseMenu = false;
+            BaseEntered = false;
             PopUpCrossroadMenu = false;
             RandomEventOccured = true;
         }
@@ -146,7 +157,20 @@ public class Board {
             board[newRow][newCol] = board[currRow][currCol];               
             board[currRow][currCol] = null;
         }
+        Player.getCurrentPlayer().addSpacesMoved(1);
+        System.out.println(Player.getCurrentPlayer().getSpacesMoved());
     }
+    public static void chooseDirection(int xpixel, int ypixel){
+       if(Window.getX(-340)<Window.getX(xpixel)&&Window.getX(-240)>Window.getX(xpixel)&&
+          Window.getY(230)<Window.getY(ypixel)&&Window.getY(270)>Window.getY(ypixel)){
+           System.out.println("works");
+       }
+        
+        
+    }
+    
+    
+    
 
 public static void Draw(Graphics2D g) {
 //Calculate the width and height of each board square.
@@ -224,9 +248,10 @@ public static void Draw(Graphics2D g) {
         g.setColor(Color.black);
         g.drawRect(Window.getX(8*xdelta),Window.getY(8*ydelta),xdelta,ydelta);
 //Draw Movement buttons
-        g.setColor(Color.white);
+        g.setColor(Color.GREEN);
         g.setFont(new Font("Arial",Font.PLAIN,25));
-        g.drawString("Game Over", 60, 120); 
+        g.drawString("Pip Boy 2300 CurrentRam:24k", 20, 120);
+        g.drawString("Resolution:78k x 55k", 20, 142); 
 //Draw crossroads
         for (int zi = 0;zi<NUM_ROWS;zi++)
         {
@@ -236,6 +261,7 @@ public static void Draw(Graphics2D g) {
                     ((Crossing)board[zi][zx]).draw(g,xdelta, ydelta);
             }
         }
+        
 
 //Draw EnemyBases
         for (int zi = 0;zi<NUM_ROWS;zi++)
@@ -269,15 +295,18 @@ public static void Draw(Graphics2D g) {
         if (PopUpCityMenu) {
             City.drawMenu(g);
         }
-        if (PopUpEnemyBaseMenu) {
+        if (BaseEntered) {
             EnemyBase.drawMenu(g);
+            Combat.drawMenu(g);
+            Fight(Player.getCurrentPlayer().weapons[0].getDamage(), damagetoPlayer);
         }        
-        if (PopUpEnemyBaseMenu) {
+        if (PopUpCrossroadMenu) {
             Crossing.drawMenu(g);
         }
         if (RandomEventOccured) {
             Event.draw(g);
         }
+           
         return;
     }
     public static void SelectOption(int xpixel, int ypixel){

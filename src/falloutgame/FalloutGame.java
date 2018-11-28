@@ -55,12 +55,13 @@ public class FalloutGame extends JFrame implements Runnable {
                     if(Board.StartPressed(e.getX()-Menu.getX(0),e.getY()-Menu.getY(0))) {
                         start=true;
                     
-                     
-                      
                     int randtype=(int)(Math.random()*2);
                     
                     SetAmbiantAudio(randtype);
                   }
+                    
+                   Board.chooseDirection(e.getX()-Window.getX(0),e.getY()-Window.getY(0));
+                    
                 }
                 if (e.BUTTON3 == e.getButton()) {
                     //right button
@@ -151,6 +152,9 @@ public class FalloutGame extends JFrame implements Runnable {
                     }
                     
                     
+                }
+                else if(e.VK_A==e.getKeyCode()){
+                
                 }
                 
                 else if(e.VK_ENTER==e.getKeyCode()){

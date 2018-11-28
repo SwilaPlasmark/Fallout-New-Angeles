@@ -21,10 +21,10 @@ public class EnemyBase extends ImportantArea{
         g.setColor(Color.white);
         g.setFont(new Font("Times New Roman",Font.PLAIN,20));        
         if (Player.getOtherPlayer().getColor() == Color.BLUE) {
-            g.drawString("Player 1 has entered a Enemy Base", Window.getX(-360), Window.getY(120));    
+            g.drawString("Player 1 has entered a Enemy Base, prepare for battle", Window.getX(-360), Window.getY(120));    
         }
         else {
-            g.drawString("Player 2 has entered a Enemy Base", Window.getX(-360), Window.getY(120));   
+            g.drawString("Player 2 has entered a Enemy Base , prepare for battle", Window.getX(-360), Window.getY(120));   
         }        
     }
     
